@@ -4,6 +4,10 @@ This is a simple implementation of the Mercurial signature scheme which is instr
 
 > A mercurial signature, which allows a signature `sig` on a message `m` under public key `pk` to be transformed into a signature `sig'` on an equivalent but unlinkable message `m'` under an equivalent but unlinkable public key `pk'`.
 
+The crate implements the signature scheme with use of the elliptic curve `Bls12-381`. It uses the dependencies from [Arkworks](https://github.com/arkworks-rs/) which is a rust ecosystem for cryptograhpy. It 
+
+Note: this repository has not been thoroughly audited. Please take your own risk if you use it in production environment.
+
 ## Example
 
 ```rust

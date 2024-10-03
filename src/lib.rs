@@ -1,6 +1,5 @@
 #![doc = include_str!("../README.md")]
 
-use ark_bls12_381::{G1Projective, G2Projective};
 use ark_ec::pairing::Pairing;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{One, UniformRand, Zero};
@@ -62,8 +61,8 @@ pub struct CurveBls12_381;
 impl Curve for CurveBls12_381 {
     type F = ark_bls12_381::Bls12_381;
     type Fr = <ark_bls12_381::Bls12_381 as Pairing>::ScalarField;
-    type G1 = G1Projective;
-    type G2 = G2Projective;
+    type G1 = ark_bls12_381::G1Projective;
+    type G2 = ark_bls12_381::G2Projective;
 }
 
 pub type PublicParams = params::PublicParams<CurveBls12_381>;

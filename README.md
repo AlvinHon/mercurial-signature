@@ -7,9 +7,12 @@ This is a simple implementation of the Mercurial signature scheme which is instr
 ## Example
 
 ```rust
-use mercurial_signature::{PublicParams, G1, Fr, change_representation};
+use mercurial_signature::{Curve, CurveBls12_381, PublicParams, change_representation};
 use ark_std::UniformRand;
 use rand::thread_rng;
+
+type G1 = <CurveBls12_381 as Curve>::G1;
+type Fr = <CurveBls12_381 as Curve>::Fr;
 
 let mut rng = rand::thread_rng();
 let pp = PublicParams::new(&mut rng);

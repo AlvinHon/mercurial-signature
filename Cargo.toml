@@ -24,7 +24,8 @@ rand_core = "0.6"
 
 [dev-dependencies]
 rand = "0.8"
+criterion = "0.5"
 
-#[[bench]]
-#name = "bench"
-#harness = false
+[[bench]]
+name = "bench"
+harness = false

@@ -36,7 +36,6 @@ where
     /// use rand::thread_rng;
     ///
     /// type G1 = <CurveBls12_381 as Curve>::G1;
-    /// type Fr = <CurveBls12_381 as Curve>::Fr;
     ///
     /// let mut rng = rand::thread_rng();
     /// let pp = PublicParams::new(&mut rng);
@@ -86,12 +85,12 @@ where
     /// let pp = PublicParams::new(&mut rng);
     /// let (mut pk, mut sk) = pp.key_gen(&mut rng, 10);
     /// let message = (0..10).map(|_| G1::rand(&mut rng)).collect::<Vec<G1>>();
-    /// let mut sig = sk.sign(&mut rng, &pp, &message);
     ///
     /// let p = Fr::rand(&mut rng);
     /// pk.convert(p);
     /// sk.convert(p);
-    /// sig.convert(&mut rng, p);
+    ///
+    /// let sig = sk.sign(&mut rng, &pp, &message);
     /// assert!(pk.verify(&pp, &message, &sig));
     /// ```
     pub fn convert(&mut self, p: C::Fr) {

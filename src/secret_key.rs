@@ -18,7 +18,15 @@ impl<C> SecretKey<C>
 where
     C: Curve,
 {
+    /// Length of the secret key.
+    pub fn length(&self) -> usize {
+        self.x.len()
+    }
+
     /// Sign a message.
+    ///
+    /// ## Safety
+    /// This function panics if the length of the secret key and the message are different.
     ///
     /// ## Example
     ///
@@ -43,6 +51,10 @@ where
         pp: &PublicParams<C>,
         message: &[C::G1],
     ) -> Signature<C> {
+        if self.x.len() < message.len() {
+            panic!("The length of the secret key must be equal or greater than the length of the message.");
+        }
+
         let y = C::Fr::rand(rng);
         // z = (x1 M1 + ... + xl Ml) * y
         let z = message

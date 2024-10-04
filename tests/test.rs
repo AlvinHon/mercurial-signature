@@ -110,6 +110,17 @@ fn verify_fail_if_signature_is_not_converted() {
     assert!(!pk2.verify(&pp, &message, &sig));
 }
 
+#[test]
+fn verify_ok_if_key_length_is_greater_than_message_length() {
+    let mut rng = rand::thread_rng();
+    let pp = PublicParams::new(&mut rng);
+    let (pk, sk) = pp.key_gen(&mut rng, 10);
+
+    let message = (0..5).map(|_| G1::rand(&mut rng)).collect::<Vec<G1>>();
+    let sig = sk.sign(&mut rng, &pp, &message);
+    assert!(pk.verify(&pp, &message, &sig));
+}
+
 /// Test the conversion function works with the change representation function.
 #[test]
 fn verify_ok_with_conversion_and_then_change_representation() {

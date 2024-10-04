@@ -17,6 +17,11 @@ impl<C> PublicKey<C>
 where
     C: Curve,
 {
+    /// Length of the public key.
+    pub fn length(&self) -> usize {
+        self.bx.len()
+    }
+
     /// Convert the public key.
     /// This function converts the public key to a new public key that is equivalent to the original public key.
     /// The input scalar `p` must be the same as the one used in the conversion of the secret key and the signature.
@@ -45,7 +50,7 @@ where
     /// ```
     pub fn verify(&self, pp: &PublicParams<C>, message: &[C::G1], sig: &Signature<C>) -> bool {
         // check length l
-        if message.len() != self.bx.len() {
+        if self.bx.len() < message.len() {
             return false;
         }
 

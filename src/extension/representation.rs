@@ -1,10 +1,11 @@
 use super::signature::VarSignature;
 use crate::Curve;
+use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use rand_core::RngCore;
 use std::ops::Mul;
 
 /// Represents a variable-length message.
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq, CanonicalSerialize, CanonicalDeserialize)]
 pub struct VarMessage<C>
 where
     C: Curve,
@@ -17,6 +18,16 @@ impl<C> VarMessage<C>
 where
     C: Curve,
 {
+    /// Return the size (in bytes) of the message.
+    pub fn size(&self) -> usize {
+        self.g.compressed_size() + self.u.iter().map(|ui| ui.compressed_size()).sum::<usize>()
+    }
+
+    /// Return the length of the message (excluding `g`).
+    pub fn length(&self) -> usize {
+        self.u.len()
+    }
+
     /// Randomize the message.
     /// It is useful when the signer runs a signing protocol with the receiver of the signature.
     /// The signer can give a zero-knowledge proof of original the message, and then signs on the

@@ -5,8 +5,6 @@ use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::{One, UniformRand, Zero};
 use std::ops::{Add, Div, Mul, MulAssign};
 
-pub mod extension;
-
 mod params;
 mod public_key;
 

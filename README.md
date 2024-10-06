@@ -1,3 +1,10 @@
+[![version]][crates.io] [![workflow status]][workflow]
+
+[version]: https://img.shields.io/crates/v/mercurial-signature.svg
+[crates.io]: https://crates.io/crates/mercurial-signature
+[workflow status]: https://github.com/AlvinHon/mercurial-signature/actions/workflows/build_and_test.yml/badge.svg?branch=main
+[workflow]: https://github.com/AlvinHon/mercurial-signature/actions/workflows/build_and_test.yml
+
 # Mercurial Signature
 
 This is a simple implementation of the Mercurial signature scheme which is instroduced in the paper [Delegatable Anonymous Credentials from Mercurial Signatures](https://eprint.iacr.org/2018/923), by Elizabeth C. Crites and Anna Lysyanskaya.

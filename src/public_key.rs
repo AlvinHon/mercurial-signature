@@ -1,6 +1,6 @@
 use ark_ec::pairing::Pairing;
-use ark_ff::Zero;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+use ark_std::Zero;
 
 use crate::{params::PublicParams, signature::Signature, Curve};
 

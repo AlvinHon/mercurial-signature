@@ -1,4 +1,4 @@
-use ark_ff::{One, UniformRand, Zero};
+use ark_std::{One, UniformRand, Zero};
 use std::ops::Mul;
 
 use crate::{params::PublicParams, signature::Signature, Curve};

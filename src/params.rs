@@ -1,7 +1,7 @@
 use std::ops::Mul;
 
-use ark_ff::UniformRand;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+use ark_std::UniformRand;
 use rand_core::RngCore;
 
 use crate::{public_key::PublicKey, secret_key::SecretKey, Curve};

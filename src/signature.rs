@@ -1,5 +1,5 @@
-use ark_ff::{One, UniformRand};
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
+use ark_std::{One, UniformRand};
 use rand_core::RngCore;
 
 use crate::Curve;

@@ -15,11 +15,10 @@ name = "mercurial_signature"
 path = "src/lib.rs"
 
 [dependencies]
-ark-bls12-381 = "0.4"
-ark-ec = "0.4"
-ark-ff = "0.4"
-ark-serialize = "0.4"
-ark-std = "0.4"
+ark-bls12-381 = "0.5"
+ark-ec = "0.5"
+ark-serialize = "0.5"
+ark-std = "0.5"
 rand_core = "0.6"
 
 [dev-dependencies]

@@ -2,21 +2,15 @@ use ark_ec::pairing::Pairing;
 use ark_serialize::{CanonicalDeserialize, CanonicalSerialize};
 use ark_std::Zero;
 
-use crate::{params::PublicParams, signature::Signature, Curve};
+use crate::{params::PublicParams, signature::Signature};
 
 #[derive(Clone, PartialEq, Eq, CanonicalSerialize, CanonicalDeserialize)]
-pub struct PublicKey<C>
-where
-    C: Curve,
-{
+pub struct PublicKey<E: Pairing> {
     // pk = (p2^x1,...,p2^xl) where (x1,...,xl) is the secret key
-    pub(crate) bx: Vec<C::G2>,
+    pub(crate) bx: Vec<E::G2>,
 }
 
-impl<C> PublicKey<C>
-where
-    C: Curve,
-{
+impl<E: Pairing> PublicKey<E> {
     /// Length of the public key.
     pub fn length(&self) -> usize {
         self.bx.len()
@@ -29,12 +23,7 @@ where
     /// ## Example
     ///
     /// ```rust
-    /// use mercurial_signature::{Curve, CurveBls12_381, PublicParams, change_representation};
-    /// use ark_std::UniformRand;
-    /// use rand::thread_rng;
-    ///
-    /// type G1 = <CurveBls12_381 as Curve>::G1;
-    /// type Fr = <CurveBls12_381 as Curve>::Fr;
+    /// use mercurial_signature::{change_representation, Fr, PublicParams, UniformRand, G1};
     ///
     /// let mut rng = rand::thread_rng();
     /// let pp = PublicParams::new(&mut rng);
@@ -48,25 +37,27 @@ where
     /// sig.convert(&mut rng, p);
     /// assert!(pk.verify(&pp, &message, &sig));
     /// ```
-    pub fn verify(&self, pp: &PublicParams<C>, message: &[C::G1], sig: &Signature<C>) -> bool {
+    pub fn verify(&self, pp: &PublicParams<E>, message: &[E::G1], sig: &Signature<E>) -> bool {
         // check length l
         if self.bx.len() < message.len() {
             return false;
         }
 
         // e(y1, p2) == e(p1, y2)
-        let lhs = C::F::pairing(sig.y1, pp.p2);
-        let rhs = C::F::pairing(pp.p1, sig.y2);
+        let lhs = E::pairing(sig.y1, pp.p2);
+        let rhs = E::pairing(pp.p1, sig.y2);
         if lhs != rhs {
             return false;
         }
 
         // e(z, y2) == e(m1, bx1) * ... * e(ml, bxl)
-        let lhs = C::F::pairing(sig.z, sig.y2);
-        let rhs = message.iter().zip(self.bx.iter()).fold(
-            C::F::pairing(C::G1::zero(), C::G2::zero()),
-            |acc, (m, bxi)| acc + C::F::pairing(*m, *bxi),
-        );
+        let lhs = E::pairing(sig.z, sig.y2);
+        let rhs = message
+            .iter()
+            .zip(self.bx.iter())
+            .fold(E::pairing(E::G1::zero(), E::G2::zero()), |acc, (m, bxi)| {
+                acc + E::pairing(*m, *bxi)
+            });
         lhs == rhs
     }
 
@@ -77,12 +68,7 @@ where
     /// ## Example
     ///
     /// ```rust
-    /// use mercurial_signature::{Curve, CurveBls12_381, PublicParams, change_representation};
-    /// use ark_std::UniformRand;
-    /// use rand::thread_rng;
-    ///
-    /// type G1 = <CurveBls12_381 as Curve>::G1;
-    /// type Fr = <CurveBls12_381 as Curve>::Fr;
+    /// use mercurial_signature::{change_representation, Fr, PublicParams, UniformRand, G1};
     ///
     /// let mut rng = rand::thread_rng();
     /// let pp = PublicParams::new(&mut rng);
@@ -96,7 +82,7 @@ where
     /// sig.convert(&mut rng, p);
     /// assert!(pk.verify(&pp, &message, &sig));
     /// ```
-    pub fn convert(&mut self, p: C::Fr) {
+    pub fn convert(&mut self, p: E::ScalarField) {
         self.bx.iter_mut().for_each(|bxi| *bxi *= p);
     }
 }

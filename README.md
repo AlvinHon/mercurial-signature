@@ -18,12 +18,7 @@ Note: this repository has not been thoroughly audited. Please take your own risk
 ## Example
 
 ```rust
-use mercurial_signature::{Curve, CurveBls12_381, PublicParams, change_representation};
-use ark_std::UniformRand;
-use rand::thread_rng;
-
-type G1 = <CurveBls12_381 as Curve>::G1;
-type Fr = <CurveBls12_381 as Curve>::Fr;
+use mercurial_signature::{change_representation, Fr, PublicParams, UniformRand, G1};
 
 let mut rng = rand::thread_rng();
 let pp = PublicParams::new(&mut rng);

@@ -1,4 +1,5 @@
-use crate::{signature::Signature, Curve};
+use crate::signature::Signature;
+use ark_ec::pairing::Pairing;
 use ark_std::UniformRand;
 use rand_core::RngCore;
 
@@ -8,12 +9,7 @@ use rand_core::RngCore;
 ///
 ///
 /// ```rust
-/// use mercurial_signature::{Curve, CurveBls12_381, PublicParams, change_representation};
-/// use ark_std::UniformRand;
-/// use rand::thread_rng;
-///
-/// type G1 = <CurveBls12_381 as Curve>::G1;
-/// type Fr = <CurveBls12_381 as Curve>::Fr;
+/// use mercurial_signature::{change_representation, Fr, PublicParams, UniformRand, G1};
 ///
 /// let mut rng = rand::thread_rng();
 /// let pp = PublicParams::new(&mut rng);
@@ -25,13 +21,13 @@ use rand_core::RngCore;
 /// change_representation(&mut rng, &mut message, &mut sig, u);
 /// assert!(pk.verify(&pp, &message, &sig));
 /// ```
-pub fn change_representation<C: Curve, R: RngCore>(
+pub fn change_representation<E: Pairing, R: RngCore>(
     rng: &mut R,
-    message: &mut [C::G1],
-    signature: &mut Signature<C>,
-    u: C::Fr,
+    message: &mut [E::G1],
+    signature: &mut Signature<E>,
+    u: E::ScalarField,
 ) {
-    let f = C::Fr::rand(rng);
+    let f = E::ScalarField::rand(rng);
     signature.convert_with_f(u, f);
 
     message.iter_mut().for_each(|mi| *mi *= u);

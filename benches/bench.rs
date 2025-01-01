@@ -1,12 +1,10 @@
 use std::time::Duration;
 
 use ark_serialize::CanonicalSerialize;
-use ark_std::{test_rng, UniformRand};
+use ark_std::test_rng;
 use criterion::{criterion_group, criterion_main, Criterion, Throughput};
-use mercurial_signature::{Curve, CurveBls12_381, PublicKey, PublicParams, SecretKey};
+use mercurial_signature::{PublicKey, PublicParams, SecretKey, UniformRand, G1};
 use rand::Rng;
-
-type G1 = <CurveBls12_381 as Curve>::G1;
 
 criterion_group! {
     name = signature;

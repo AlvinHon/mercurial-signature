@@ -1,8 +1,4 @@
-use ark_bls12_381::Fr;
-use ark_std::UniformRand;
-use mercurial_signature::{change_representation, Curve, CurveBls12_381, PublicParams};
-
-type G1 = <CurveBls12_381 as Curve>::G1;
+use mercurial_signature::{change_representation, Fr, PublicParams, UniformRand, G1};
 
 /// Test the conversion function for the public key, secret key, and signature.
 /// The converted public key, secret key, and signature should be able to verify the message.
